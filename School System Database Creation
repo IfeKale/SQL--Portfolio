@@ -1,0 +1,93 @@
+-Department Table
+CREATE TABLE Department (
+  deptID INT PRIMARY KEY AUTO_INCREMENT, 
+  deptName VARCHAR(255)
+);
+
+
+--Instructor Table
+CREATE TABLE Instructor (
+    InstructorID INT PRIMARY KEY AUTO_INCREMENT,
+    InstructorType VARCHAR(10),
+    Email VARCHAR(100) UNIQUE,
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    studentID INT,
+    deptID INT,
+    FOREIGN KEY (deptID) REFERENCES Department(deptID)
+);
+
+--Program Table
+CREATE TABLE Program (
+  programID INT PRIMARY KEY AUTO_INCREMENT,
+  programName VARCHAR(255),
+  deptID INT,
+  FOREIGN KEY (deptID) REFERENCES Department(deptID)
+);
+
+
+--Course Table
+CREATE TABLE Course (
+  courseID INT PRIMARY KEY AUTO_INCREMENT,
+  courseName VARCHAR(255),
+  courseDescription TEXT,
+  hasLabs BOOLEAN,
+  hasTutorial BOOLEAN,
+  programID INT,
+  prereqID INT,
+  FOREIGN KEY (programID) REFERENCES Program(programID),
+  FOREIGN KEY (prereqID) REFERENCES Course(courseID)
+);
+
+--Course Offering Table
+CREATE TABLE CourseOffering (
+  courseOfferingID INT PRIMARY KEY AUTO_INCREMENT,
+  deliveryFormat VARCHAR(50),
+  courseTime TIME,
+  courseDays VARCHAR(20),
+  startDate DATE,
+  endDate DATE,
+  instructorID INT,
+  courseID INT,
+  FOREIGN KEY (instructorID) REFERENCES Instructor(InstructorID),
+  FOREIGN KEY (courseID) REFERENCES Course(courseID)
+);
+
+--LabOffering Table
+CREATE TABLE LabOffering (
+  labOfferingID INT PRIMARY KEY AUTO_INCREMENT, 
+  deliveryFormat VARCHAR(50),
+  courseTime TIME,
+  courseDays VARCHAR(20),
+  labInstructorID INT,
+  courseID INT,
+  FOREIGN KEY (labInstructorID) REFERENCES Instructor(InstructorID),
+  FOREIGN KEY (courseID) REFERENCES Course(courseID)
+);
+
+--Student Table
+CREATE TABLE Student (
+  studentID INT PRIMARY KEY AUTO_INCREMENT,
+  firstName VARCHAR(255),
+  lastName VARCHAR(255),
+  email VARCHAR(255),
+  phone VARCHAR(20),
+  address VARCHAR(255),
+  programID INT,
+  FOREIGN KEY (programID) REFERENCES Program(programID)
+);
+
+
+--Registered Courses Table
+CREATE TABLE RegisteredCourses (
+  RegistrationID INT PRIMARY KEY AUTO_INCREMENT, 
+  studentID INT,
+  courseOfferingID INT,
+  labOfferingID INT,
+  tutorialOfferingID INT,
+  finalGrade VARCHAR(10),
+  FOREIGN KEY (studentID) REFERENCES Student(studentID),
+  FOREIGN KEY (courseOfferingID) REFERENCES CourseOffering(courseOfferingID),
+  FOREIGN KEY (labOfferingID) REFERENCES LabOffering(labOfferingID),
+  FOREIGN KEY (tutorialOfferingID) REFERENCES LabOffering(labOfferingID)
+);
