@@ -95,3 +95,117 @@ CREATE TABLE RegisteredCourses (
   FOREIGN KEY (labOfferingID) REFERENCES LabOffering(labOfferingID),
   FOREIGN KEY (tutorialOfferingID) REFERENCES LabOffering(labOfferingID)
 );
+
+--Department table rows
+INSERT INTO Department (deptName) VALUES
+('Computer Science'),
+('Electrical Engineering'),
+('Mechanical Engineering'),
+('Civil Engineering'),
+('Mathematics'),
+('Physics'),
+('Biology'),
+('Chemistry'),
+('English'),
+('History');
+
+--Instructor Table rows
+INSERT INTO Instructor (InstructorType, Email, firstName, lastName, studentID, deptID) VALUES
+('Full-time', 'john.doe@example.com', 'John', 'Doe', NULL, 1),
+('Part-time', 'jane.smith@example.com', 'Jane', 'Smith', NULL, 1),
+('Full-time', 'michael.jackson@example.com', 'Michael', 'Jackson', NULL, 2),
+('Part-time', 'susan.wilson@example.com', 'Susan', 'Wilson', NULL, 2),
+('Full-time', 'david.jones@example.com', 'David', 'Jones', NULL, 3),
+('Part-time', 'emily.adams@example.com', 'Emily', 'Adams', NULL, 3),
+('Full-time', 'robert.roberts@example.com', 'Robert', 'Roberts', NULL, 4),
+('Part-time', 'lisa.johnson@example.com', 'Lisa', 'Johnson', NULL, 4),
+('Full-time', 'william.smith@example.com', 'William', 'Smith', NULL, 5),
+('Part-time', 'jennifer.brown@example.com', 'Jennifer', 'Brown', NULL, 5);
+
+--Program table rows
+INSERT INTO Program (programName, deptID) VALUES
+('Computer Science Bachelor', 1),
+('Electrical Engineering Bachelor', 2),
+('Mechanical Engineering Bachelor', 3),
+('Civil Engineering Bachelor', 4),
+('Mathematics Bachelor', 5),
+('Physics Bachelor', 6),
+('Biology Bachelor', 7),
+('Chemistry Bachelor', 8),
+('English Bachelor', 9),
+('History Bachelor', 10);
+
+--Course table rows
+INSERT INTO Course (courseName, courseDescription, hasLabs, hasTutorial, programID, prereqID) VALUES
+('Introduction to Programming', 'This course introduces basic programming concepts.', TRUE, TRUE, 1, NULL),
+('Data Structures', 'This course covers advanced data structures and algorithms.', TRUE, TRUE, 1, 1),
+('Digital Circuits', 'This course covers the fundamentals of digital circuits.', TRUE, FALSE, 2, NULL),
+('Power Systems', 'This course covers the principles of power systems engineering.', TRUE, FALSE, 2, 3),
+('Statics', 'This course covers the principles of statics in mechanical engineering.', TRUE, FALSE, 3, NULL),
+('Dynamics', 'This course covers the principles of dynamics in mechanical engineering.', TRUE, FALSE, 3, 5),
+('Structural Engineering', 'This course covers the principles of structural engineering.', TRUE, FALSE, 4, 5),
+('Calculus', 'This course covers calculus fundamentals.', TRUE, TRUE, 5, NULL),
+('Algebra', 'This course covers algebraic concepts.', TRUE, TRUE, 5, 8),
+('Modern Physics', 'This course covers modern physics theories.', TRUE, FALSE, 6, NULL);
+
+--Course Offering table rows
+INSERT INTO CourseOffering (deliveryFormat, courseTime, courseDays, startDate, endDate, instructorID, courseID) VALUES
+('In-Person', '09:00:00', 'Monday, Wednesday', '2024-03-15', '2024-06-30', 1, 1),
+('Online', '14:00:00', 'Tuesday, Thursday', '2024-03-16', '2024-07-01', 2, 2),
+('Hybrid', '10:00:00', 'Monday, Wednesday', '2024-03-17', '2024-07-02', 3, 3),
+('In-Person', '11:00:00', 'Tuesday, Thursday', '2024-03-18', '2024-07-03', 4, 4),
+('Online', '13:00:00', 'Monday, Friday', '2024-03-19', '2024-07-04', 5, 5),
+('Hybrid', '08:30:00', 'Tuesday, Thursday', '2024-03-20', '2024-07-05', 6, 6),
+('In-Person', '10:30:00', 'Monday, Wednesday', '2024-03-21', '2024-07-06', 7, 7),
+('Online', '15:30:00', 'Tuesday, Thursday', '2024-03-22', '2024-07-07', 8, 8),
+('Hybrid', '12:00:00', 'Monday, Wednesday', '2024-03-23', '2024-07-08', 9, 9),
+('In-Person', '09:30:00', 'Tuesday, Thursday', '2024-03-24', '2024-07-09', 10, 10);
+
+--Lab Offering table rows
+INSERT INTO LabOffering (deliveryFormat, courseTime, courseDays, labInstructorID, courseID) VALUES
+('In-Person', '14:00:00', 'Monday, Wednesday', 1, 1),
+('Online', '09:00:00', 'Tuesday, Thursday', 2, 2),
+('Hybrid', '10:30:00', 'Monday, Wednesday', 3, 3),
+('In-Person', '13:00:00', 'Tuesday, Thursday', 4, 4),
+('Online', '15:00:00', 'Monday, Wednesday', 5, 5),
+('Hybrid', '11:30:00', 'Tuesday, Thursday', 6, 6),
+('In-Person', '12:30:00', 'Monday, Wednesday', 7, 7),
+('Online', '10:00:00', 'Tuesday, Thursday', 8, 8),
+('Hybrid', '14:30:00', 'Monday, Wednesday', 9, 9),
+('In-Person', '11:00:00', 'Tuesday, Thursday', 10, 10);
+
+-Student table rows
+INSERT INTO Student (firstName, lastName, email, phone, address, programID) VALUES
+('John', 'Doe', 'john.doe@example.com', '123-456-7890', '123 Main St, City, Country', 1),
+('Jane', 'Smith', 'jane.smith@example.com', '234-567-8901', '456 Elm St, City, Country', 2),
+('Michael', 'Johnson', 'michael.johnson@example.com', '345-678-9012', '789 Oak St, City, Country', 3),
+('Emily', 'Williams', 'emily.williams@example.com', '456-789-0123', '101 Maple St, City, Country', 4),
+('David', 'Brown', 'david.brown@example.com', '567-890-1234', '202 Pine St, City, Country', 5),
+('Sarah', 'Jones', 'sarah.jones@example.com', '678-901-2345', '303 Cedar St, City, Country', 6),
+('Ryan', 'Garcia', 'ryan.garcia@example.com', '789-012-3456', '404 Birch St, City, Country', 7),
+('Jessica', 'Martinez', 'jessica.martinez@example.com', '890-123-4567', '505 Oak St, City, Country', 8),
+('Daniel', 'Hernandez', 'daniel.hernandez@example.com', '901-234-5678', '606 Walnut St, City, Country', 9),
+('Maria', 'Lopez', 'maria.lopez@example.com', '012-345-6789', '707 Pine St, City, Country', 10),
+('Emily', 'Scott', 'emily.scott@example.com', '123-456-7890', '123 Main St, City, Country', 1),
+('James', 'Taylor', 'james.taylor@example.com', '234-567-8901', '456 Elm St, City, Country', 2),
+('Sophia', 'Clark', 'sophia.clark@example.com', '345-678-9012', '789 Oak St, City, Country', 3),
+('William', 'Lewis', 'william.lewis@example.com', '456-789-0123', '101 Maple St, City, Country', 4),
+('Olivia', 'Walker', 'olivia.walker@example.com', '567-890-1234', '202 Pine St, City, Country', 5),
+('Benjamin', 'Hall', 'benjamin.hall@example.com', '678-901-2345', '303 Cedar St, City, Country', 6);
+
+--Registered courses table rows
+INSERT INTO RegisteredCourses (studentID, courseOfferingID, labOfferingID, tutorialOfferingID, finalGrade) VALUES
+(1, 1, 1, NULL, 'A'),
+(2, 2, 2, NULL, 'B'),
+(3, 3, 3, NULL, 'A-'),
+(4, 4, 4, NULL, 'B+'),
+(5, 5, 5, NULL, 'A'),
+(6, 6, 6, NULL, 'C'),
+(7, 7, 7, NULL, 'B-'),
+(8, 8, 8, NULL, 'A+'),
+(9, 9, 9, NULL, 'B'),
+(10, 10, 10, NULL, 'A-');
+
+
+
+
