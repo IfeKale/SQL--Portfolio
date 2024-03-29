@@ -1,0 +1,114 @@
+--Question 1: Show all the instructors are there? What are their names, emails, type of instructor and 
+--departments.
+SELECT 
+    i.firstName AS InstructorFirstName,
+    i.lastName AS InstructorLastName,
+    i.Email AS InstructorEmail,
+    i.InstructorType AS InstructorType,
+    d.deptName AS DepartmentName
+FROM 
+    Instructor i
+JOIN 
+    Department d ON i.deptID = d.deptID;
+
+--Question 2: Change the instructor that is teaching a course
+UPDATE CourseOffering
+SET instructorID = 8
+WHERE courseOfferingID = 3;
+
+--Question 3: Remove a department that has no programs, are there any consequences to this query, 
+--are there any issues with data integrity?
+DELETE FROM Department
+WHERE deptID NOT IN (SELECT deptID FROM Program);
+
+--Question 4: Remove a student that is enrolled in at least one course, what happens to the courses 
+--that they are enrolled in?  
+
+--Are there any errors? Yes there were errors.
+--Explain why this has happened? 
+--The error message indicated that I was trying to delete a row from the Student table which has associated 
+--rows in the RegisteredCourses table, and this violates the foreign key constraint.
+--I needed to first delete the associated rows from the RegisteredCourses table before deleting the student record
+DELETE FROM RegisteredCourses
+WHERE studentID IN (
+    SELECT studentID
+    FROM Student
+);
+-- Then, remove the students
+DELETE FROM Student;
+
+--Question 5: Show all the instructors are currently teaching courses that start after Jan 1, 2024? Show 
+--those that started after Jan 1, 2024 and are teaching an online course or in-person?
+SELECT DISTINCT
+    I.firstName,
+    I.lastName,
+    I.Email,
+    I.InstructorType,
+    C.courseName,
+    CO.deliveryFormat,
+    CO.startDate
+FROM
+    Instructor I
+JOIN
+    CourseOffering CO ON I.InstructorID = CO.instructorID
+JOIN
+    Course C ON CO.courseID = C.courseID
+WHERE
+    CO.startDate > '2024-01-01'
+    AND (CO.deliveryFormat = 'Online' OR CO.deliveryFormat = 'In-Person');
+
+--Question 6: How many students have completed the 2nd course offering listed, and what highest and lowest 
+--grade in this course, and what is the average grade? 
+
+--How many students have completed the second course offering listed?
+SELECT COUNT(DISTINCT studentID) AS num_students_completed
+FROM RegisteredCourses
+WHERE courseOfferingID = 2;
+
+--What is the highest and lowest grade in this course?
+SELECT MAX(finalGrade) AS highest_grade, MIN(finalGrade) AS lowest_grade
+FROM RegisteredCourses
+WHERE courseOfferingID = 2;
+
+SELECT 
+    finalGrade,
+    COUNT(studentID) AS num_students_completed,
+    MAX(finalGrade) AS highest_grade,
+    MIN(finalGrade) AS lowest_grade,
+    ROUND(AVG(CASE 
+        WHEN finalGrade IN ('A', 'A+', 'A-', 'B', 'B+', 'B-', 'C', 'C+') THEN
+            CASE 
+                WHEN finalGrade = 'A' THEN 4.0
+                WHEN finalGrade = 'A+' THEN 4.0
+                WHEN finalGrade = 'A-' THEN 3.7
+                WHEN finalGrade = 'B' THEN 3.0
+                WHEN finalGrade = 'B+' THEN 3.3
+                WHEN finalGrade = 'B-' THEN 2.7
+                WHEN finalGrade = 'C' THEN 2.0
+                WHEN finalGrade = 'C+' THEN 2.3
+            END
+        ELSE 0 
+    END), 2) AS average_grade
+FROM RegisteredCourses
+WHERE courseOfferingID = 2
+GROUP BY finalGrade;
+
+
+--Question 7: a query to find the number of students enrolled in courses offered online or in-person, 
+--and whose final grade is above a certain threshold (let's say 'B').
+SELECT 
+    COUNT(DISTINCT rc.studentID) AS num_students
+FROM 
+    RegisteredCourses rc
+JOIN 
+    CourseOffering co ON rc.courseOfferingID = co.courseOfferingID
+JOIN 
+    Instructor i ON co.instructorID = i.InstructorID
+WHERE 
+    (co.deliveryFormat = 'Online' OR co.deliveryFormat = 'In-Person')
+    AND rc.finalGrade >= 'B'
+GROUP BY 
+    rc.courseOfferingID
+HAVING 
+    COUNT(DISTINCT rc.studentID) > 5;
+
