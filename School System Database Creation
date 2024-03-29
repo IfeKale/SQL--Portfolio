@@ -1,3 +1,7 @@
+--Create Database
+CREATE DATABASE SchoolSystem;
+
+
 -Department Table
 CREATE TABLE Department (
   deptID INT PRIMARY KEY AUTO_INCREMENT, 
